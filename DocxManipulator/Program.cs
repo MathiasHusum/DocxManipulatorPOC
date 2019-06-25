@@ -1,13 +1,13 @@
-﻿using System;
-namespace DocxManipulator
+﻿namespace DocxManipulator
 {
     class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            Modifier.SearchAndReplace(@"/home/microting/Documents/FinalRapport-ALFASpecialaffald.docx");
-            Modifier.ConvertToPdf( @"FinalRapport-ALFASpecialaffald.docx",@"FinalRapport-ALFASpecialaffald.odt",
-                @"/home/microting/Documents");
+            Modifier.SearchAndReplace(@"/home/microting/Documents/Test.docx");
+//            Modifier.ConvertToPdf( @"FinalRapport-ALFASpecialaffald.docx",@"FinalRapport-ALFASpecialaffald.odt",
+//                @"/home/microting/Documents");
+//            Modifier.InsertPicture(@"/home/microting/Documents/FinalRapport-ALFASpecialaffald.docx", "");
         }
         
     }
