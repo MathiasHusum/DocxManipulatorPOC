@@ -86,15 +86,16 @@ namespace DocxManipulator
             }
         }
 
-        public static void InsertPicture(string fullPathToDocument, string fileName)
+        public static void InsertPicture(string fullPathToDocument, string fullPathToImageFile)
         {
+            
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
                 MainDocumentPart mainPart = wordDoc.MainDocumentPart;
 
                 ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
 
-                using (FileStream stream = new FileStream(fileName, FileMode.Open))
+                using (FileStream stream = new FileStream(fullPathToImageFile, FileMode.Open))
                 {
                     imagePart.FeedData(stream);
                 }
