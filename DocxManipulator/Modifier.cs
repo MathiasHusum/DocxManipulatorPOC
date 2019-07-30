@@ -19,9 +19,9 @@ namespace DocxManipulator
 {
     public class Modifier
     {
-        public static void SearchAndReplace(string document)
+        public static void SearchAndReplace(string fullPathToDocument)
         {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(document, true))
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
                 List<KeyValuePair<int, string>> fieldValues = new List<KeyValuePair<int, string>>();
             
@@ -59,7 +59,7 @@ namespace DocxManipulator
             }
         }
 
-        public static void ConvertToPdf(string docxFile, string path)
+        public static void ConvertToPdf(string docxFileName, string fullPathToDocument)
         {
             try
             {
@@ -67,9 +67,9 @@ namespace DocxManipulator
                 {
                     pdfProcess.StartInfo.UseShellExecute = false;
                     pdfProcess.StartInfo.RedirectStandardOutput = true;
-                    pdfProcess.StartInfo.WorkingDirectory = path;
+                    pdfProcess.StartInfo.WorkingDirectory = fullPathToDocument;
                     pdfProcess.StartInfo.FileName = "soffice";
-                    pdfProcess.StartInfo.Arguments = $" --headless --convert-to pdf {docxFile}";
+                    pdfProcess.StartInfo.Arguments = $" --headless --convert-to pdf {docxFileName}";
 //                    pdfProcess.StartInfo.Verb = "runas";
                     pdfProcess.Start();
                     string output = pdfProcess.StandardOutput.ReadToEnd();
@@ -86,9 +86,9 @@ namespace DocxManipulator
             }
         }
 
-        public static void InsertPicture(string document, string fileName)
+        public static void InsertPicture(string fullPathToDocument, string fileName)
         {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(document, true))
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
                 MainDocumentPart mainPart = wordDoc.MainDocumentPart;
 
