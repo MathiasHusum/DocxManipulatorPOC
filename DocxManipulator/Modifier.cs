@@ -88,6 +88,8 @@ namespace DocxManipulator
 
         public static void InsertPicture(string fullPathToDocument, string fullPathToImageFile)
         {
+            List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
+            
             
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
@@ -100,7 +102,24 @@ namespace DocxManipulator
                     imagePart.FeedData(stream);
                 }
 
-                AddImageToBody(wordDoc, mainPart.GetIdOfPart(imagePart));
+                string currentHeader;
+                foreach (var keyValuePair in keyValuePairs)
+                {
+                    
+                    if (keyValuePair.Key != currentHeader)
+                    {
+                        //if currentHeader is not equal to key, insert new header.
+                        currentHeader = keyValuePair.Key;
+                        Body body = wordDoc.MainDocumentPart.Document.Body;
+
+                        Paragraph para = body.AppendChild(new Paragraph());
+                        Run run = para.AppendChild(new Run());
+                        run.AppendChild(new Text(keyValuePair.Key));
+                    }
+                    
+                    AddImageToBody(wordDoc, mainPart.GetIdOfPart(imagePart));
+
+                }
 
             }
         }
