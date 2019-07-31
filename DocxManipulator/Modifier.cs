@@ -86,46 +86,72 @@ namespace DocxManipulator
             }
         }
 
-        public static void InsertPicture(string fullPathToDocument, string fullPathToImageFile)
+        public static void Insert(string fullPathToDocument, string fullPathToImageFile)
         {
+            
             List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
-            
-            
+            keyValuePairs.Add(new KeyValuePair<string, string>("Deponi", "Picture 1"));
+            keyValuePairs.Add(new KeyValuePair<string, string>("Deponi", "Picture 2"));
+            keyValuePairs.Add(new KeyValuePair<string, string>("Deponi", "Picture 3"));
+            keyValuePairs.Add(new KeyValuePair<string, string>("Have", "Picture 4"));
+            keyValuePairs.Add(new KeyValuePair<string, string>("Metal", "Picture 5"));
+            keyValuePairs.Add(new KeyValuePair<string, string>("Metal", "Picture 6"));
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
-                MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                string currentHeader = "";
 
-                ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
-
-                using (FileStream stream = new FileStream(fullPathToImageFile, FileMode.Open))
-                {
-                    imagePart.FeedData(stream);
-                }
-
-                string currentHeader;
                 foreach (var keyValuePair in keyValuePairs)
                 {
-                    
-                    if (keyValuePair.Key != currentHeader)
+                    if (currentHeader != keyValuePair.Key)
                     {
-                        //if currentHeader is not equal to key, insert new header.
-                        currentHeader = keyValuePair.Key;
-                        Body body = wordDoc.MainDocumentPart.Document.Body;
+                        if (!string.IsNullOrEmpty(currentHeader))
+                        {
+                            // insert pakebreak
+                            Body body = wordDoc.MainDocumentPart.Document.Body;
 
-                        Paragraph para = body.AppendChild(new Paragraph());
-                        Run run = para.AppendChild(new Run());
-                        run.AppendChild(new Text(keyValuePair.Key));
+                            Paragraph para = body.AppendChild(new Paragraph());
+                            Run run = para.AppendChild(new Run());
+                            Break pageBreak = run.AppendChild(new Break());
+                            pageBreak.Type = BreakValues.Page;
+                        }
+                        InsertHeader(keyValuePair.Key, wordDoc, currentHeader);
+                        currentHeader = keyValuePair.Key;
                     }
                     
-                    AddImageToBody(wordDoc, mainPart.GetIdOfPart(imagePart));
-
+                    InsertPicture(keyValuePair.Value, wordDoc);
                 }
+            }
 
+        }
+
+        public static void InsertHeader(string header, WordprocessingDocument wordDoc, string currentHeader)
+        {
+            if (header != currentHeader)
+            {
+                //if currentHeader is not equal to new header, insert new header.
+                currentHeader = header;
+                Body body = wordDoc.MainDocumentPart.Document.Body;
+
+                Paragraph para = body.AppendChild(new Paragraph());
+                Run run = para.AppendChild(new Run());
+                run.AppendChild(new Text(currentHeader));
             }
         }
 
+        public static void InsertPicture(string fullPathToImageFile, WordprocessingDocument wordDoc)
+        {
+           
+            MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+
+            using (FileStream stream = new FileStream(fullPathToImageFile, FileMode.Open)) {
+                imagePart.FeedData(stream);
+            }
+            AddImageToBody(wordDoc, mainPart.GetIdOfPart(imagePart));
+        }
+
         private static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
-    {
+        {
         
         // Define the reference of the image.
         var element =
@@ -135,7 +161,7 @@ namespace DocxManipulator
                      new DW.EffectExtent() { LeftEdge = 0L, TopEdge = 0L, 
                          RightEdge = 0L, BottomEdge = 0L },
                      new DW.DocProperties() { Id = (UInt32Value)1U, 
-                         Name = "Picture 1" },
+                         Name = "Picture" },
                      new DW.NonVisualGraphicFrameDrawingProperties(
                          new A.GraphicFrameLocks() { NoChangeAspect = true }),
                      new A.Graphic(
