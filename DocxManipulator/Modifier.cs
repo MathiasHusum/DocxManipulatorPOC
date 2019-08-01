@@ -88,7 +88,6 @@ namespace DocxManipulator
 
         public static void Insert(string fullPathToDocument, string fullPathToImageFile)
         {
-            
             List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
             keyValuePairs.Add(new KeyValuePair<string, string>("Deponi", "Picture 1"));
             keyValuePairs.Add(new KeyValuePair<string, string>("Deponi", "Picture 2"));
@@ -157,7 +156,7 @@ namespace DocxManipulator
         var element =
              new Drawing(
                  new DW.Inline(
-                     new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                     new DW.Extent() { Cx = 6000000L, Cy = 4000000L },
                      new DW.EffectExtent() { LeftEdge = 0L, TopEdge = 0L, 
                          RightEdge = 0L, BottomEdge = 0L },
                      new DW.DocProperties() { Id = (UInt32Value)1U, 
