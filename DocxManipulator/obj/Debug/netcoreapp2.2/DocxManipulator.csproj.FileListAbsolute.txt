@@ -9,3 +9,14 @@
 /home/microting/Documents/workspace/DocxManipulator/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.AssemblyInfo.cs
 /home/microting/Documents/workspace/DocxManipulator/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.dll
 /home/microting/Documents/workspace/DocxManipulator/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.pdb
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/bin/Debug/netcoreapp2.2/DocxManipulator.deps.json
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/bin/Debug/netcoreapp2.2/DocxManipulator.runtimeconfig.json
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/bin/Debug/netcoreapp2.2/DocxManipulator.runtimeconfig.dev.json
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/bin/Debug/netcoreapp2.2/DocxManipulator.dll
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/bin/Debug/netcoreapp2.2/DocxManipulator.pdb
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.csprojAssemblyReference.cache
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.csproj.CoreCompileInputs.cache
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.AssemblyInfoInputs.cache
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.AssemblyInfo.cs
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.dll
+/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/Debug/netcoreapp2.2/DocxManipulator.pdb

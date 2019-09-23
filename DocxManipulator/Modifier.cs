@@ -9,11 +9,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
+using Break = DocumentFormat.OpenXml.Wordprocessing.Break;
+using Color = DocumentFormat.OpenXml.Wordprocessing.Color;
+using Drawing = DocumentFormat.OpenXml.Wordprocessing.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+using RunProperties = DocumentFormat.OpenXml.Wordprocessing.RunProperties;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 
 namespace DocxManipulator
 {
@@ -23,6 +30,7 @@ namespace DocxManipulator
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fullPathToDocument, true))
             {
+          
                 List<KeyValuePair<int, string>> fieldValues = new List<KeyValuePair<int, string>>();
             
             
@@ -30,23 +38,30 @@ namespace DocxManipulator
                 fieldValues.Add(new KeyValuePair<int, string>(2 , "human"));
                 fieldValues.Add(new KeyValuePair<int, string>(3 , "loch ness monster"));
                 fieldValues.Add(new KeyValuePair<int, string>(4 , "Ape"));
-                fieldValues.Add(new KeyValuePair<int, string>(5 , "Qutie"));
-                fieldValues.Add(new KeyValuePair<int, string>(6 , "Klima"));
-                fieldValues.Add(new KeyValuePair<int, string>(7 , "Oof"));
+                fieldValues.Add(new KeyValuePair<int, string>(5 , "&#10004;"));
+                fieldValues.Add(new KeyValuePair<int, string>(6 , "Monkey"));
+                fieldValues.Add(new KeyValuePair<int, string>(7 , "Lords"));
                 
 //                var body = wordDoc.MainDocumentPart.Document.Body;
 
+                var body = wordDoc.MainDocumentPart.Document.Body;
+
+                var paragraphs = body.Descendants<Paragraph>();
+              
                 
                 string docText = null;
                 using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
                 {
                     docText = sr.ReadToEnd();
                 }
-                
                 foreach (var fieldValue in fieldValues)
-                {
+                {  
                     Regex regexText = new Regex($"F_{fieldValue.Key}");
                     docText = regexText.Replace(docText, fieldValue.Value);
+                    if (fieldValue.Key == 4)
+                    {
+                        HighlightWord(wordDoc, $"F_{fieldValue.Key}");
+                    }
                 }
 
                 using (StreamWriter sw = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
@@ -58,7 +73,36 @@ namespace DocxManipulator
                 
             }
         }
-
+        
+        public static void HighlightWord(WordprocessingDocument wordDoc, string word)
+        {
+            Body body = wordDoc.MainDocumentPart.Document.Body;
+            var paragraph = body.Descendants<Paragraph>().Where(x => x.InnerText == word);
+            
+            foreach (var para in paragraph)
+            {
+                var subRuns = para.Descendants<Run>().ToList();
+                foreach (var run in subRuns)
+                {
+                    var subRunProp = run.Descendants<RunProperties>().ToList().FirstOrDefault();
+                    var newColor = new Color();
+                    newColor.Val = "EF413D";
+                    
+                    if (subRunProp != null)
+                    {
+                        var color = subRunProp.Descendants<Color>().FirstOrDefault();
+                        subRunProp.ReplaceChild(newColor, color);
+                    }
+                    else
+                    {
+                        var tmpSubRunProp = new RunProperties();
+                        tmpSubRunProp.AppendChild(newColor);
+                        run.AppendChild(tmpSubRunProp);
+                    }
+                }
+            }
+            wordDoc.MainDocumentPart.Document.Save();
+        }
         public static void ConvertToPdf(string docxFileName, string fullPathToDocument)
         {
             try
@@ -86,6 +130,38 @@ namespace DocxManipulator
             }
         }
 
+        public static void AppendStyle(WordprocessingDocument wordDoc, string word, string col)
+        {
+            try
+            {
+                var body = wordDoc.MainDocumentPart.Document.Body;
+                var paragraphs = body.Elements<Paragraph>();
+                var color = new Color();
+
+                foreach (var para in paragraphs)
+                {
+                    foreach (var run in para.Elements<Run>())
+                    {
+                        foreach (var text in run.Elements<Text>())
+                        {
+                            if (text.Text.Contains(word))
+                            {
+                                color.Val = col;
+                                run.AppendChild(color);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        
         public static void Insert(string fullPathToDocument, string fullPathToImageFile)
         {
             List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();

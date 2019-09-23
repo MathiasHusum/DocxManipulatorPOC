@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/microting/Documents/workspace/DocxManipulator/DocxManipulator/DocxManipulator.csproj",
+    "projectUniqueName": "/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/DocxManipulator.csproj",
     "projectName": "DocxManipulator",
-    "projectPath": "/home/microting/Documents/workspace/DocxManipulator/DocxManipulator/DocxManipulator.csproj",
-    "outputPath": "/home/microting/Documents/workspace/DocxManipulator/DocxManipulator/obj/",
+    "projectPath": "/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/DocxManipulator.csproj",
+    "outputPath": "/home/microting/Documents/workspace/Microting/DocxManipulatorPOC/DocxManipulator/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "/usr/share/dotnet/sdk/NuGetFallbackFolder"
